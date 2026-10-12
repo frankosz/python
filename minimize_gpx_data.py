@@ -21,7 +21,7 @@ def minimize_sailboat_gpx(input_file, output_file, max_distance_meters=5, strip_
 
     # 1. Simplify Geometrically (Ramer-Douglas-Peucker algorithm)
     # This is perfect for sailboats; it drops redundant points while keeping tacking/jibing angles
-    gpx.simplify(max_distance_meters=max_distance_meters)
+    gpx.simplify(max_distance_meters)
 
     # 2. Optionally strip out data fields to further minify the flat file
     if strip_metadata:
