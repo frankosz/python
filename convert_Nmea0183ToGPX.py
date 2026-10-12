@@ -1,6 +1,5 @@
 import re
 
-
 def nmea_to_gpx(input_log_path, output_gpx_path):
     with open(input_log_path, 'r') as f:
         lines = f.readlines()
