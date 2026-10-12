@@ -1,6 +1,7 @@
 import re
 from datetime import datetime
 from pathlib import Path
+from minimize_gpx_data import minimize_sailboat_gpx
 
 def nmea_to_gpx(input_log_path, output_gpx_path):
     with open(input_log_path, 'r') as f:
@@ -91,6 +92,12 @@ def convert_date_folders(base_path, start_date, end_date):
 
         output_path = folder / "vessel_track.gpx"
         nmea_to_gpx(input_path, output_path)
+        minimize_sailboat_gpx(
+            input_file=output_path,
+            output_file=folder / "vessel_track_minimized.gpx",
+            max_distance_meters=1,  # Präzision innerhalb von 1 Meter beibehalten
+            strip_metadata=True
+        )
 
 
 if __name__ == "__main__":

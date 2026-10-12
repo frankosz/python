@@ -52,6 +52,6 @@ if __name__ == "__main__":
     minimize_sailboat_gpx(
         input_file=r"E:\OneDrive - OSZ IMT\Privat\07_Sport\Segeln\_Lotta\Törndaten\2026_07+08_Schweden_Westküste\20260719\vessel_track.gpx", 
         output_file=r"E:\OneDrive - OSZ IMT\Privat\07_Sport\Segeln\_Lotta\Törndaten\2026_07+08_Schweden_Westküste\20260719\my_sailing_trip_minimized.gpx", 
-        max_distance_meters=3, # Keeps tracking precise within 3 meters
+        max_distance_meters=1, # Keeps tracking precise within 1 meters
         strip_metadata=True
     )
