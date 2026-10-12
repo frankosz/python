@@ -1,4 +1,6 @@
 import re
+from datetime import datetime
+from pathlib import Path
 
 def nmea_to_gpx(input_log_path, output_gpx_path):
     with open(input_log_path, 'r') as f:
@@ -65,4 +67,35 @@ def nmea_to_gpx(input_log_path, output_gpx_path):
         f.write(gpx_head + "\n" + "\n".join(trackpoints) + "\n" + gpx_foot)
     print(f"Erfolgreich {len(trackpoints)} Trackpunkte aus dem Jahr 2026 nach {output_gpx_path} exportiert.")
 
-nmea_to_gpx(r'I:\A37\20260803\combined.txt', r'I:\A37\20260803\vessel_track.gpx')
+def convert_date_folders(base_path, start_date, end_date):
+    base_path = Path(base_path)
+    if not base_path.is_dir():
+        raise FileNotFoundError(f"Folder does not exist: {base_path}")
+
+    for folder in sorted(base_path.iterdir()):
+        if not folder.is_dir() or not re.fullmatch(r"\d{8}", folder.name):
+            continue
+
+        try:
+            folder_date = datetime.strptime(folder.name, "%Y%m%d").date()
+        except ValueError:
+            continue
+
+        if not start_date <= folder_date <= end_date:
+            continue
+
+        input_path = folder / "combined.txt"
+        if not input_path.is_file():
+            print(f"Übersprungen (combined.txt fehlt): {folder}")
+            continue
+
+        output_path = folder / "vessel_track.gpx"
+        nmea_to_gpx(input_path, output_path)
+
+
+if __name__ == "__main__":
+    convert_date_folders(
+        r"E:\OneDrive - OSZ IMT\Privat\07_Sport\Segeln\_Lotta\Törndaten\2026_07+08_Schweden_Westküste",
+        datetime.strptime("20260714", "%Y%m%d").date(),
+        datetime.strptime("20260814", "%Y%m%d").date(),
+    )
